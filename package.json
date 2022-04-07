@@ -1,0 +1,21 @@
+{
+  "name": "intercrop-data",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": "https://github.com/adrienj/intercrop-data.git",
+  "author": "adrienj <eyospace@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.23",
+    "commander": "^9.1.0",
+    "html-entities": "^2.3.2",
+    "node-fetch": "^3.2.3",
+    "node-html-parser": "^5.3.3",
+    "ts-node": "^10.7.0",
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "taxonomy:update": "ts-node ./taxonomy/scripts/update.ts"
+  }
+}

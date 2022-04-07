@@ -16,6 +16,10 @@ The aim of this project is to enable the collaborative collection and sharing of
 The first version will be published in the [Resource Description Framework (RDF) format](https://www.w3.org/TR/rdf11-concepts/) and its Ontology in the [Web Ontology Language (OWL) format](https://www.w3.org/TR/owl2-overview/). Data processing pipelines may be built in the future to export to other formats.
 
 
+## Data Processing Pipeline
+
+
+
 ## Taxonomy
 
 In order to standardize the dataset using an authoritative, comprehensive and reliable taxonomic reference, we'll use the unique taxon identifiers of [Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/).
