@@ -49,4 +49,6 @@ export const parseSimpleTables = async (articleName: string, outputPath: string)
     
     console.log('Saving file...');
     fs.writeFileSync(outputPath, convertListToCSV(species));
+
+    return species;
 };
