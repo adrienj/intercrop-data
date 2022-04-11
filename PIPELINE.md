@@ -2,9 +2,10 @@
 
 ## Overview
 
+The initial list of species relations is first generated and regularly updated using a software data processing pipeline. We fetch a list of common species and enrich it with taxonomic data. This custom taxonomic database is then used to parse wikipedia articles that contain relations data, and will serve as a basis for manual curation of more relations.
+
 ### Taxonomy
 
-The initial list of species relations is first generated and regularly updated using a software data processing pipeline.
 Species include vegetables, fruits, herbs, trees, flowers, insects, fungi and animals.
 
 1. First we generate a basic taxonomy of scientific and vernacular names by
@@ -17,9 +18,9 @@ Species include vegetables, fruits, herbs, trees, flowers, insects, fungi and an
     - manually curating taxons that could not be automatically extracted
 1. Then we enrich the list with
     - metadata from the free [GBIF API](https://www.gbif.org/developer/species)
-        - GBIF identifiers
-        - vernacular synonyms in multiple languages
-        - However, general taxon data (kingdom, family, genus...) is stored in a sperate JSON file
+        - Find missing GBIF identifiers
+        - Fetch vernacular synonyms in multiple languages
+        - Fetch general taxon data (kingdom, family, genus...)
     - tags from a manually curated list
         - Fruit trees
         - predatory insects

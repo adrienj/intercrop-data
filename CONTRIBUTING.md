@@ -9,7 +9,7 @@ You will need [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/) insta
 Run in the terminal :
 ```sh
 yarn install
-yarn update
+yarn taxonomy:update
 ```
 
 ## Disclamer

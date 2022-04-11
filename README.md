@@ -29,8 +29,8 @@ In order to standardize the dataset using an authoritative, comprehensive and re
 
 ##### IntercrO : Intercropping Ontology
 
-- Plant, insect/pest, fungus, animal
-    - GBIF taxon (e.g. https://www.gbif.org/species/2928997)
+- Plant, insect, fungus, animal
+    - GBIF taxon (e.g. https://www.gbif.org/species/2928997), must be part of the [GBIF Backbone Taxonomy](https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c)
 - Relations
     - Direct (plant -> relation -> plant)
         - [RO_0002213](http://purl.obolibrary.org/obo/RO_0002213) positively regulates
@@ -77,7 +77,7 @@ Any indirect relation can be converted to a direct relation.
 
 ##### Metadata
 
-Each triple (entity relation entity) must be annotated with a source (doi, wikipedia url, blog url, author ORCID...)
+Each triple (entity relation entity) must be annotated with at least one source (doi, wikipedia url, blog url, author ORCID...)
 
 
 ##### Guidelines
@@ -100,6 +100,7 @@ However, the GloBI Relations Ontology only accepts the subset of the OBO RO foun
     - ground cover
     - solar radiation needs
     - soil humidity needs
+    - possible data source : the closed [TRY Plant Trait Database](https://www.try-db.org/)
 - Optimization of
     - nutrient in soil (based on root depth)
     - solar radiation (based on plant height, bushiness, ground cover, solar radiation needs)
@@ -109,11 +110,11 @@ However, the GloBI Relations Ontology only accepts the subset of the OBO RO foun
 ## Roadmap
 - Define the ontology
 - Define the taxonomic reference
-- Document how to contribute
 - Parse the wikipedia page (https://en.wikipedia.org/wiki/List_of_companion_plants)
+- Document how to contribute
+- Publish on zenodo
 - Contribute to GloBI (https://www.globalbioticinteractions.org/contribute) ?
-- Publish on zenodo ?
-- Update wikidata ?
+- Update wikidata/wikipedia ?
 
 
 

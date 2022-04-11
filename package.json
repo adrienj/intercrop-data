@@ -7,15 +7,21 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
     "commander": "^9.1.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "html-entities": "^2.3.2",
     "node-fetch": "^3.2.3",
     "node-html-parser": "^5.3.3",
+    "prettier": "^2.6.2",
     "ts-node": "^10.7.0",
     "tslib": "^2.3.1",
     "typescript": "^4.6.3"
   },
   "scripts": {
-    "taxonomy:update": "ts-node ./taxonomy/scripts/update.ts"
+    "taxonomy:update": "NODE_NO_WARNINGS=1 node --loader ts-node/esm  --experimental-specifier-resolution=node --experimental-modules ./pipeline/taxonomy/index.ts"
   }
 }

@@ -1,54 +1,53 @@
-
-import fs from 'fs';
-import { parse } from 'node-html-parser';
+import { HTMLElement, parse } from 'node-html-parser';
 import { decode } from 'html-entities';
-import { convertListToCSV } from './csv';
-
+import { query } from './query';
+import { NameEntry } from './gbif';
 
 export const getWikipediaPage = async (pageName: string) => {
-    const listOfVegetablesRawSource = await fetch(`https://en.wikipedia.org/w/api.php?action=parse&page=${pageName}&format=json`);
-    const listOfVegetablesSource = await listOfVegetablesRawSource.json() as any;
-    return listOfVegetablesSource.parse.text['*'];
-}
+    console.log(`Fetching Wikipedia page ${pageName}`);
+    const response = await query(`https://en.wikipedia.org/w/api.php?action=parse&page=${pageName}&format=json`);
+    return response.parse.text['*'] as string;
+};
 
-
-// returns a list of [common, latin] name pairs
-export const getRowsFromAllTables = (html: string) => {
+export const getTablesFromHTML = (html: string): HTMLElement[] => {
     const parsedHtml = parse(html);
-    const tables = parsedHtml.querySelectorAll('table');
-    
-    return tables.reduce((rows, table) => ([ // flatten all tables into one
-        ...rows,
-        ...table
-            .querySelectorAll('tr') // get all rows in the table
-            .slice(1) // skip the first row
-            .map(row => {
-                const cols = row.querySelectorAll('td');
+    return parsedHtml.querySelectorAll('table');
+};
 
-                const [wiki_common, wiki_latin] = cols
-                    .map(col => decode(col.innerText.trim()).replace(/ /gm, ' ')) // for each column get only the text content
-                    .slice(0, 2); // take only the first two columns
+export const getRowsFromAllTables = (tables: HTMLElement[]): Omit<NameEntry, 'source'>[] => {
+    return tables.reduce(
+        (rows, table) => [
+            // flatten all tables into one
+            ...rows,
+            ...(table
+                .querySelectorAll('tr') // get all rows in the table
+                .slice(1) // skip the first row
+                .map(row => {
+                    const cols = row.querySelectorAll('td');
+                    if (!cols.length) {
+                        return null;
+                    }
 
-                // first column is the article link
-                const wiki_link = (cols[0].querySelector('a') as unknown as HTMLAnchorElement)?.href;
+                    const [vernacular, latin] = cols
+                        // eslint-disable-next-line no-irregular-whitespace
+                        .map(col => decode(col.innerText.trim()).replace(/ /gm, ' ')) // for each column get only the text content
+                        .slice(0, 2); // take only the first two columns
 
-                return {
-                    wiki_link,
-                    wiki_common,
-                    wiki_latin,
-                }
-            })
-    ]), []);
-}
+                    if (!vernacular || !latin) {
+                        return null;
+                    }
 
+                    // first column is the article link
+                    const wiki_link = (cols[0].querySelector('a') as unknown as HTMLAnchorElement)?.href;
 
-export const parseSimpleTables = async (articleName: string, outputPath: string) => {
-    console.log('Fetching from Wikipedia...');
-    const data = getRowsFromAllTables(await getWikipediaPage(articleName)); // https://en.wikipedia.org/wiki/{articleName}
-    const species = data.map(row => [row.wiki_common, row.wiki_latin]);
-    
-    console.log('Saving file...');
-    fs.writeFileSync(outputPath, convertListToCSV(species));
-
-    return species;
+                    return {
+                        wiki_link,
+                        vernacular,
+                        latin,
+                    };
+                })
+                .filter(Boolean) as any), // remove nulls
+        ],
+        [],
+    );
 };

@@ -1,14 +1,24 @@
-// Fetch GBIF data from taxon names
-// Store result in output.json
 import fs from 'fs';
-import { getGBIFDataset } from '../../lib/gbif';
+import { GBIFData, getGBIFDataset, NameEntry } from '../../lib/gbif';
+import { getCacheData } from '../../lib/cache';
+import * as url from 'url';
 
-const output = __dirname + '/output.json';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-export const main = async (namesPath = '../names/output.csv') => {
-    console.log('Fetching full GBIF taxons...');
-    const gbifDataset = await getGBIFDataset(require(namesPath));
+const cachePath = __dirname + '/cache/gbif.json';
 
-    // Save gbifData in a file
-    fs.writeFileSync(output, JSON.stringify(gbifDataset, null, 2));
+/**
+ * Fetch GBIF metadadata for each entry, by its gbif_nubKey if defined, or search by latin name.
+ * Then fetch more vernacular names for each entry.
+ */
+export default async (namesData: NameEntry[], disableCache = false): Promise<Record<string, GBIFData>> => {
+    const cache = !disableCache ? getCacheData(cachePath) : undefined;
+
+    const data = await getGBIFDataset(namesData, cache);
+
+    if (!disableCache) {
+        fs.writeFileSync(cachePath, JSON.stringify(data, null, 2));
+    }
+
+    return data;
 };
